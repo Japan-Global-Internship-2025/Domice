@@ -1,0 +1,11 @@
+@import url('./reset.css');
+@import url('./assets/css/pretendardvariable.css');
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Pretendard', sans-serif;
+}
