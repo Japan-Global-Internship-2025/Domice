@@ -1,15 +1,8 @@
 import './App.css'
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect"
-import styled from 'styled-components';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserView, MobileView } from 'react-device-detect'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
-
   return (
     <>
       <BrowserView>
