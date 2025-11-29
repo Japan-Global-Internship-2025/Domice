@@ -33,11 +33,33 @@ const Menu = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 4px;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        
+        path {
+            fill: rgb(64, 64, 64);
+            /* 부모(Menu)의 $active props에 따라 투명도 조절 */
+            fill-opacity: ${props => props.$active ? 1 : 0.32};
+            transition: fill-opacity 0.2s ease-in-out;
+        }
+    }
+
+    p {
+        color: ${props => props.$active ? 'rgba(64, 64, 64, 1)' : 'rgba(64, 64, 64, 0.32)'};
+        transition: color 0.2s ease-in-out;
+    }
 `;
 
 const StyledIcon = styled.svg`
     width: 24px;
     height: 24px;
+    & path {
+        fill: rgb(64, 64, 64);
+        fill-opacity: ${props => props.$active ? 1 : 0.32};
+        transition: fill-opacity 0.2s ease-in-out; 
+    }
 `;
 
 const Label = styled.p`
@@ -58,16 +80,20 @@ const list = [
     { img: mypage, value: "마이페이지", idx: 4 },
 ]
 
-export default function Navigation() {
+export default function Navigation(props) {
     return (
         <Container>
             <InnerBox>
                 {list.map((item, idx) => {
                     const IconComponent = item.img; 
-                    return (<Menu key={idx}>
-                        <IconComponent as={StyledIcon} /> 
-                        <Label>{item.value}</Label>
-                    </Menu>)
+                    const isActive = idx === props.idx;
+
+                    return (
+                        <Menu key={idx} $active={isActive}>
+                            <IconComponent /> 
+                            <Label>{item.value}</Label>
+                        </Menu>
+                    )
                 })}
             </InnerBox>
         </Container>
