@@ -10,13 +10,10 @@ import {
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
 
-const Container = styled.div`
-`;
-
 function App() {
 
   return (
-    <Container>
+    <>
       <BrowserView>
         <h1>PC에서는 제공되지 않습니다.</h1>
       </BrowserView>
@@ -26,7 +23,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </MobileView>
-    </Container>
+    </>
   )
 }
 
