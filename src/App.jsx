@@ -3,7 +3,6 @@ import { BrowserView, MobileView } from 'react-device-detect'
 import { Route, Routes } from 'react-router-dom'
 
 function App() {
-
   return (
     <>
       <BrowserView>
