@@ -46,10 +46,17 @@ const GoogleLogo = styled.img`
 `;
 
 export function Intro() {
+    const GOOGLE_CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+    const GOOGLE_REDIRECT_URI = import.meta.env.VITE_REDIRECT_URIS;
+
+    const handleGoogleLogin = () => {
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
+    };
+
     return (
         <Container>
             <Logo src="/images/logo_green.png" alt="Logo" />
-            <StartBtn onClick={() => {alert('로그인 연결')}}>
+            <StartBtn type="google" onClick={handleGoogleLogin}>
                 <GoogleLogo src="/images/google.png" alt="Google Logo" />
                 <StartText>Google로 시작하기</StartText>
             </StartBtn>
