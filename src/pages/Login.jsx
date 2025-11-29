@@ -117,12 +117,12 @@ const FinishBtn = styled.button`
 `;
 
 const regionOptions = [
-    { label: '수도권', value: '0' },
-    { label: '지방', value: '1' },
+    { label: '수도권', value: 0 },
+    { label: '지방', value: 1 },
 ];
 const genderOptions = [
-    { label: '남성', value: '0' },
-    { label: '여성', value: '1' },
+    { label: '남성', value: 0 },
+    { label: '여성', value: 1 },
 ];
 
 export default function Login() {
@@ -151,10 +151,14 @@ export default function Login() {
         }
 
         const userData = {
+            user_id: user.id,
+            student_number: user.student_number,
+            name: user.given_name,
             room: roomNumber,
             region: regionOptions[selectedRegion].value,
             gender: genderOptions[selectedGender].value,
-            ...user
+            email: user.email,
+            profile_img: user.picture
         };
         console.log(userData);
         
@@ -191,7 +195,7 @@ export default function Login() {
                     },
                 });
                 const data = await response.json();
-                data.family_name = data.family_name.slice(0, 4);
+                data.student_number = data.family_name.slice(0, 4);
                 console.log('User Info:', data);
                 setUser(data);
             } catch (error) {
