@@ -1,6 +1,4 @@
 import './App.css'
-import { Intro } from './pages/Intro'
-import { Login } from './pages/Login';
 import {
   BrowserView,
   MobileView,
@@ -19,8 +17,6 @@ function App() {
       </BrowserView>
       <MobileView>
         <Routes>
-          <Route path="/" element={<Intro />} />
-          <Route path="/login" element={<Login />} />
         </Routes>
       </MobileView>
     </>
