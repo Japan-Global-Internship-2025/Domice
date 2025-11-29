@@ -125,7 +125,7 @@ const genderOptions = [
     { label: '여성', value: '1' },
 ];
 
-export function Login() {
+export default function Login() {
     const [user, setUser] = useState(null);
     const [selectedRegion, setSelectedRegion] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
@@ -156,9 +156,27 @@ export function Login() {
             gender: genderOptions[selectedGender].value,
             ...user
         };
-
         console.log(userData);
-        alert('회원가입이 완료되었습니다!');
+        
+
+        // async () => {
+        //     try {
+        //         const response = await fetch('', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(userData),
+        //         });
+        //         const data = await response.json();
+        //         console.log('Server Response:', data);
+        //         alert('회원가입이 완료되었습니다!');
+        //         return data;
+        //     } catch (error) {
+        //         console.error('Error sending user data:', error);
+        //         alert('회원가입 실패')
+        //     }
+        // };
     };
 
     useEffect(() => {

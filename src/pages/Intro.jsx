@@ -45,7 +45,7 @@ const GoogleLogo = styled.img`
     aspect-ratio: 1/1;
 `;
 
-export function Intro() {
+export default function Intro() {
     const GOOGLE_CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
     const GOOGLE_REDIRECT_URI = import.meta.env.VITE_REDIRECT_URIS;
 
