@@ -1,5 +1,6 @@
 import './App.css'
-import { Intro } from './components/Intro'
+import { Intro } from './pages/Intro'
+import { Login } from './pages/Login';
 import {
   BrowserView,
   MobileView,
@@ -7,7 +8,7 @@ import {
   isMobile,
 } from "react-device-detect"
 import styled from 'styled-components';
-
+import { Routes, Route } from 'react-router-dom';
 
 const Container = styled.div`
 `;
@@ -20,7 +21,10 @@ function App() {
         <h1>PC에서는 제공되지 않습니다.</h1>
       </BrowserView>
       <MobileView>
-        <Intro />
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </MobileView>
     </Container>
   )
