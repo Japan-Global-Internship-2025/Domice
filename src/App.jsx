@@ -1,6 +1,11 @@
 import './App.css'
 import { BrowserView, MobileView } from 'react-device-detect'
 import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home';
+import Notice from './pages/Notice';
+import MealInfo from './pages/MealInfo';
+import Board from './pages/Board';
+import Mypage from './pages/Mypage';
 
 function App() {
   return (
@@ -10,6 +15,11 @@ function App() {
       </BrowserView>
       <MobileView>
         <Routes>
+          <Route path='/home' element={<Home/>}/>
+          <Route path='/notice' element={<Notice/>}/>
+          <Route path='/meal' element={<MealInfo/>}/>
+          <Route path='/board' element={<Board/>}/>
+          <Route path='/mypage' element={<Mypage/>}/>
         </Routes>
       </MobileView>
     </>
