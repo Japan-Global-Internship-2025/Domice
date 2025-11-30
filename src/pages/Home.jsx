@@ -6,6 +6,14 @@ import HomeMain from "../components/HomeMain";
 import HomeOut from "../components/HomeOut";
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`;
+
+const Content = styled.div`
+    flex-grow: 1;
+    overflow-y: auto;
 `;
 
 const HomeNav = styled.div`
@@ -63,7 +71,9 @@ export default function Home() {
                     );
                 })}
             </HomeNav>
-            {homeMenu==0? <HomeMain/>: <HomeOut/>}
+            <Content>
+                {homeMenu==0? <HomeMain/>: <HomeOut/>}
+            </Content>
             <Navigation idx={0} />
         </Container>
 
