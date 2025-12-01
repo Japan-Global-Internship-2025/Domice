@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Header from "../components/Header"
 import Navigation from "../components/Navigation";
-import { useState } from "react";
-import HomeMain from "../components/HomeMain";
-import HomeOut from "../components/HomeOut";
+import { useState, useEffect } from "react";
+import HomeMain from "./HomeMain";
+import HomeOut from "./HomeOut";
+import { getMeal } from '../services/meal'
 
 const Container = styled.div`
     display: flex;
@@ -14,16 +15,19 @@ const Container = styled.div`
 const Content = styled.div`
     flex-grow: 1;
     overflow-y: auto;
+    padding: 0px 24px 60px 24px;
+    background-color: #f9f9f9;
 `;
 
-const HomeNav = styled.div`
-    display: flex;
-    align-items: flex-start;
+const Nav = styled.div`
     gap: 10px;
     background: #48BFA2;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
 `;
 
-const HomeNavBtn = styled.div`
+const NavBtn = styled.div`
     padding: 16px 16px;
     width: 50%;
     text-align: center;
@@ -34,45 +38,68 @@ const HomeNavBtn = styled.div`
     line-height: 22px;
     color: #FFF;
     opacity: ${props => props.$isActive ? 1 : 0.64};
-    position: relative;
 `;
 
-const SelectMenu = styled.div`
+const SelectMenuLine = styled.div`
     position: absolute;
-    left: 50%;
+    left: ${props => props.$left};
     transform: translateX(-50%);
     bottom: 0;
     width: 144px;
     height: 3px;
     border-radius: 9px;
     background: #008263;
-    transition: color 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
 `;
 
-const HomeNavList = [
-    { value: '홈', idx: 0 },
-    { value: '외출관리', idx: 1 }
+const NavList = [
+    { value: '홈', idx: 0, left: "25%" },
+    { value: '외출관리', idx: 1, left: "75%" }
 ]
 
 export default function Home() {
-    const [homeMenu, setHomeMenu] = useState(0);
+    const [navMenu, setNavMenu] = useState(0);
+    const [mealInfo, setMealInfo] = useState([["로딩중..."], ["로딩중..."], ["로딩중..."]]);
 
-
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await getMeal();
+                const data = response.mealServiceDietInfo[1].row;
+                const meals = [];
+                data.forEach(row => {
+                    const temp = [];
+                    const info = row.DDISH_NM.split("<br/>");
+                    info.forEach(item => {
+                        const menu = item.split(" ")[0];
+                        temp.push(menu);
+                    });
+                    meals.push(temp);
+                });
+                setMealInfo(meals);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+        fetchData();
+    }, [])
+    console.log(mealInfo);
     return (
         <Container>
             <Header />
-            <HomeNav>
-                {HomeNavList.map((item, idx) => {
+            <Nav>
+                {NavList.map((item, idx) => {
                     return (
-                        <HomeNavBtn onClick={() => { setHomeMenu(item.idx) }} $isActive={homeMenu == item.idx} key={idx}>
+                        <NavBtn onClick={() => { setNavMenu(item.idx) }} $isActive={navMenu == item.idx} key={idx}>
                             {item.value}
-                            {homeMenu == item.idx && <SelectMenu/>}
-                        </HomeNavBtn>
+                        </NavBtn>
                     );
                 })}
-            </HomeNav>
+                {<SelectMenuLine $left={NavList[navMenu].left} />}
+            </Nav>
             <Content>
-                {homeMenu==0? <HomeMain/>: <HomeOut/>}
+                {navMenu == 0 ? <HomeMain meals={mealInfo} /> : <HomeOut />}
             </Content>
             <Navigation idx={0} />
         </Container>

@@ -1,30 +1,15 @@
 import styled from "styled-components";
-import TodayNotice from "./TodayNotice";
-import Calendar from "./Calendar";
+import TodayNotice from "../components/TodayNotice";
+import Calendar from "../components/Calendar";
 import { useNavigate } from "react-router-dom";
 import UserIcon from "../assets/icon/user.svg?react";
 import RightArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
-import todayMeal from '../services/meal'
-import { useEffect, useState } from "react";
+import LeftBoxTitle from "../components/LeftBoxTitle";
 
-const Container = styled.div`
-    overflow-y: auto; 
-    padding: 0px 24px 60px 24px;
-    background-color: #f9f9f9;
-`;
+const Container = styled.div``;
 
 const TodayTeacherContainer = styled.div`
     margin-top: 20px;
-`;
-
-const BoxTitle = styled.p`
-    margin-left: 9px;
-    color: #404040;
-    font-family: Pretendard;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 22px;
 `;
 
 const TodayTeacherBox = styled.div`
@@ -193,46 +178,18 @@ const MealSpan = styled.span`
     line-height: 22px;
 `
 
-export default function HomeMain() {
+export default function HomeMain(props) {
     const navigate = useNavigate();
     const teacher_name = "김사감";
     const teacher_phone = "010-1234-5678";
     const meal_title = ['아침', '점심', '저녁'];
-    const [mealInfo, setMealInfo] = useState([["로딩중..."], ["로딩중..."], ["로딩중..."]]);
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await todayMeal();
-                const data = response.mealServiceDietInfo[1].row;
-                const meals = [];
-                data.forEach(row => {
-                    const temp = [];
-                    const info = row.DDISH_NM.split("<br/>");
-                    info.forEach(item => {
-                        const menu = item.split(" ")[0];
-                        temp.push(menu);
-                    });
-                    meals.push(temp);
-                });
-                setMealInfo(meals);
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-        fetchData();
-    }, [])
-    console.log(mealInfo);
 
     return (
         <Container>
             <TodayNotice/>
             <Calendar dates={getWeekDates()}/>
             <TodayTeacherContainer>
-                <BoxTitle>
-                    오늘의 선생님
-                </BoxTitle>
+                <LeftBoxTitle text={"오늘의 선생님"}/>
                 <TodayTeacherBox>
                     <BoxTopLine />
                     <BoxContent>
@@ -252,7 +209,7 @@ export default function HomeMain() {
             </TodayTeacherContainer>
             <TodayMealsContainer>
                 <MealsTitle>
-                    <BoxTitle>오늘의 급식</BoxTitle>
+                    <LeftBoxTitle text={"오늘의 급식"}/>
                     <ToDatail onClick={() => { navigate("/meal") }}>
                         <GoDatailText>
                             자세히보기
@@ -265,7 +222,7 @@ export default function HomeMain() {
                 <MealsInfo>
                     <MealsContent>
                         {meal_title.map((item, idx) => {
-                            const meals = mealInfo[idx];
+                            const meals = props.meals[idx];
                             return (
                                 <MealBox key={idx}>
                                     <MealTitle>{item}</MealTitle>
@@ -281,7 +238,6 @@ export default function HomeMain() {
                                 </MealBox>
                             )
                         })}
-
                     </MealsContent>
                 </MealsInfo>
             </TodayMealsContainer>

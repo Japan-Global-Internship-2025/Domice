@@ -3,9 +3,10 @@ import { BrowserView, MobileView } from 'react-device-detect'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home';
 import Notice from './pages/Notice';
-import MealInfo from './pages/MealInfo';
+import MealInfo from './pages/Meal';
 import Board from './pages/Board';
 import Mypage from './pages/Mypage';
+import NoticeDetail from './pages/NoticeDetail';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path='/home' element={<Home/>}/>
           <Route path='/notice' element={<Notice/>}/>
+          <Route path='/notice/:id' element={<NoticeDetail/>}/>
           <Route path='/meal' element={<MealInfo/>}/>
           <Route path='/board' element={<Board/>}/>
           <Route path='/mypage' element={<Mypage/>}/>

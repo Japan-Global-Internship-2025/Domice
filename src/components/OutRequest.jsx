@@ -2,21 +2,12 @@ import styled from "styled-components";
 import { useState, useRef } from "react";
 import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import OutRequestContent from "./OutRequestContent";
-// import CalendarIcon from "../assets/icon/calendar.svg";
+import LeftBoxTitle from "./LeftBoxTitle";
+import { dateAndDay } from "../services/date_format"
 
 const OutRequestContainer = styled.div`
     width: 100%;
     margin-top: 45px;
-`;
-
-const BoxTitle = styled.p`
-    margin-left: 9px;
-    color: #404040;
-    font-family: Pretendard;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 22px;
 `;
 
 const OutRequsetTitle = styled.div`
@@ -103,6 +94,11 @@ const TitleDate = styled.p`
 `
 
 const CalendarIconBox = styled.div`
+    width: 13.5px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const CalendarInput = styled.input.attrs({
@@ -123,10 +119,6 @@ const CalendarInput = styled.input.attrs({
     background-size: 100% 100%;
 
     &::-webkit-calendar-picker-indicator {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         cursor: pointer; 
@@ -140,18 +132,18 @@ export default function OutRequest() {
             date2: '2025-11-17',
             reason: '병원',
             ok: true
-        }
+        }   
     ]
     const [outRequsetDetail, setOutRequestDetail] = useState(false);
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
+        
 
     return (
         <OutRequestContainer>
             <OutRequsetTitle>
-                <BoxTitle>외출신청</BoxTitle>
+                <LeftBoxTitle text={"외출신청"}/>
                 <ToDetail onClick={() => { setOutRequestDetail(!outRequsetDetail) }}>
                     <GoDetailText>
-                        외출내역 전체보기
+                        {outRequsetDetail? '외출내역 숨기기': '외출내역 보기'}
                     </GoDetailText>
                     <GoDetailIcon $rotate={outRequsetDetail}>
                         <ArrowIcon />
@@ -160,22 +152,18 @@ export default function OutRequest() {
             </OutRequsetTitle>
             <OutRequestList>
                 {outRequsetDetail && data.map((item, idx) => {
-                    const date1 = new Date(item.date1)
-                    const date2 = new Date(item.date2);
-                    const str_date1 = `${date1.getFullYear()}.${date1.getMonth() + 1}.${date1.getDate()}`
-                    const day_date1 = days[date1.getDay()];
-                    const str_date2 = `${date2.getFullYear()}.${date2.getMonth() + 1}.${date2.getDate()}`
-                    const day_date2 = days[date2.getDay()];
+                    const str_date1 = dateAndDay(new Date(item.date1))
+                    const str_date2 = dateAndDay(new Date(item.date2));
                     return (
                         <OutRequestBox key={idx}>
                             <OutRequestBoxTitle>
                                 <TitleLine />
-                                <TitleDate>{str_date1} ({day_date1})</TitleDate>
+                                <TitleDate>{str_date1}</TitleDate>
                                 <CalendarIconBox>
                                     <CalendarInput />
                                 </CalendarIconBox>
                             </OutRequestBoxTitle>
-                            <OutRequestContent date={str_date2} day={day_date2} reason={item.reason} />
+                            <OutRequestContent date={str_date2} reason={item.reason} ok={item.ok} />
                         </OutRequestBox>
                     )
                 })}

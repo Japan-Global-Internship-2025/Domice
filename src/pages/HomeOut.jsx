@@ -1,23 +1,11 @@
 import styled from "styled-components";
-import TodayNotice from "./TodayNotice";
-import OutRequest from "./OutRequest";
+import TodayNotice from "../components/TodayNotice";
+import OutRequest from "../components/OutRequest";
+import LeftBoxTitle from "../components/LeftBoxTitle";
+import SelectRemain from "../components/SelectRemain";
 import { useEffect, useState } from "react";
 
-const Container = styled.div`
-    overflow-y: auto; 
-    padding: 0px 24px 60px 24px;
-    background-color: #f9f9f9;
-`;
-
-const BoxTitle = styled.p`
-    margin-left: 9px;
-    color: #404040;
-    font-family: Pretendard;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 22px;
-`;
+const Container = styled.div``;
 
 const CheckInContainer = styled.div`
     margin-top: 32px;
@@ -95,7 +83,7 @@ export default function HomeOut() {
         <Container>
             <TodayNotice />
             <CheckInContainer>
-                <BoxTitle>입실체크</BoxTitle>
+                <LeftBoxTitle text={"입실체크"}/>
                 <CheckInBox>
                     <NearyByDates>
                         {nearbyDate.map((item, idx) => {
@@ -115,6 +103,7 @@ export default function HomeOut() {
                 </CheckInBox>
             </CheckInContainer>
             <OutRequest />
+            <SelectRemain />
         </Container>
     )
 }

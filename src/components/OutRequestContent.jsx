@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const OutRequestContentBox = styled.div`
+const ContentBox = styled.div`
     display: flex;
     padding: 8px 14px;
     justify-content: space-between;
@@ -10,13 +10,13 @@ const OutRequestContentBox = styled.div`
     border: 0.8px solid rgba(64, 64, 64, 0.24);
 `;
 
-const OutRequestContentInnerBox = styled.div`
+const ContentInnerBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 `;
 
-const OutRequestContentDate = styled.p`
+const ContentDate = styled.p`
     height: 17px;
     align-self: stretch;
     color: #818181;
@@ -26,7 +26,7 @@ const OutRequestContentDate = styled.p`
     line-height: 22px;
 `
 
-const OutRequestContentReason = styled.p`
+const ContentReason = styled.p`
     color: #404040;
     text-align: center;
     font-family: Pretendard;
@@ -36,17 +36,43 @@ const OutRequestContentReason = styled.p`
     line-height: 22px;
 `;
 
+const ContentCheck = styled.div`
+    display: flex;
+    padding: 1px 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 30px;
+    background: #3D8EFF;
+`;
+
+const CheckText = styled.p`
+    align-self: stretch;
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 22px;
+`;
+
 export default function OutRequestContent(props) {
     return (
-        <OutRequestContentBox>
-            <OutRequestContentInnerBox>
-                <OutRequestContentDate>
-                    {props.date} ({props.day})
-                </OutRequestContentDate>
-                <OutRequestContentReason>
+        <ContentBox>
+            <ContentInnerBox>
+                <ContentDate>
+                    {props.date}
+                </ContentDate>
+                <ContentReason>
                     {props.reason}
-                </OutRequestContentReason>
-            </OutRequestContentInnerBox>
-        </OutRequestContentBox>
+                </ContentReason>
+            </ContentInnerBox>
+            <ContentCheck>
+                <CheckText>
+                    {props.ok? "승인": "거절"}
+                </CheckText> 
+            </ContentCheck>
+        </ContentBox>
     )
 }

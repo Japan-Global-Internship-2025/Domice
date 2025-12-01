@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header"
 import Navigation from "../components/Navigation";
-import BoardMain from "./BoardMain";
-import BoardAnonymous from "./BoardAnonymous";
+import MealToday from "./MealToday";
+import MealMonth from "./MealMonth";
 
 const Container = styled.div``;
 
@@ -49,11 +49,11 @@ const Content = styled.div`
 `;
 
 const NavList = [
-    { value: '전체 게시판', idx: 0, left: "25%" },
-    { value: '1대1 문의', idx: 1, left: "75%" }
+    { value: '오늘의 급식', idx: 0, left: "25%" },
+    { value: '이번달 급식표', idx: 1, left: "75%" }
 ]
 
-export default function Board() {
+export default function MealInfo() {
     const [navMenu, setNavMenu] = useState(0);
     return (
         <Container>
@@ -69,9 +69,9 @@ export default function Board() {
                 {<SelectMenuLine $left={NavList[navMenu].left} />}
             </Nav>
             <Content>
-                {navMenu == 0 ? <BoardMain /> : <BoardAnonymous />}
+                {navMenu == 0 ? <MealToday/> : <MealMonth />}
             </Content>
-            <Navigation idx={3} />
+            <Navigation idx={2} />
         </Container>
     )
 }
