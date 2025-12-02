@@ -5,25 +5,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dataAndDayAndTime } from "../services/date_format"
 
-const datas = [
-    {
-        id: 1,
-        title: "화재 대피 훈련 안내",
-        content: "오늘 7교시 이후 기숙사 화재 대피 훈련이 있습니다. 오늘 7교시 이후 기숙사 화재 대피 훈련이 있습니다. 오늘 7교시 이후 기숙사 화재 대피 훈련이 있습니다. 오늘 7교시 이후 기숙사 화재 대피 훈련이 있습니다. 오늘 7교시 이후 기숙사 화재 대피 훈련이 있습니다.",
-        target: "1,2,3",
-        author: "김OO",
-        created_at: "2025-12-01T12:00:00Z",
-    },
-    {
-        id: 2,
-        title: "4층 세탁기 관련 주의사항",
-        content: "(대충 세탁기 잘 사용하라는 내용)",
-        target: "1,2",
-        author: "김OO",
-        created_at: "2025-11-30T12:00:00Z"
-    }
-]
-
 const Container = styled.div`
     height: 100vh;
     display: flex;
@@ -120,36 +101,44 @@ const MoveBtn = styled.div`
 `
 
 export default function NoticeDetail(props) {
-    const [postData, setPostData] = useState(null);
+    const [data, setData] = useState(null);
     const [postId, setPostId] = useState(null);
     const navigate = useNavigate();
     const pathname = window.location.pathname;
     const segments = pathname.split('/');
     const id = segments[segments.length - 1];
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
     useEffect(() => {
-        setPostId(Number(id));
-        const data = fecthData(id);
-        setPostData(data);
-        if (Object.keys(data).length == 0 || postId < 0) {
-            window.history.back();
-            alert("마지막입니다.");
+        async function fetchData() {
+            const response = await fetch(`${SERVER_URL}/api/notices/${id}`, {
+                method: 'GET'
+            })
+            const temp = await response.json()
+            if (!temp.success || postId < 0) {
+                window.history.back();
+                alert("마지막입니다.");
+            }
+            console.log(temp);
+            setData(temp.data);
         }
+        setPostId(Number(id));
+        fetchData();
     }, [navigate])
 
     return (
         <Container>
             <Header />
             <Main>
-                {postData &&
+                {data &&
                     <ContentBox>
                         <Title>
-                            <TitleText>{postData.title}</TitleText>
-                            <OtherTitleText>{postData.author} 선생님</OtherTitleText>
-                            <OtherTitleText>{dataAndDayAndTime(new Date(postData.created_at))}</OtherTitleText>
+                            <TitleText>{data.title}</TitleText>
+                            <OtherTitleText>{data.author} 선생님</OtherTitleText>
+                            <OtherTitleText>{dataAndDayAndTime(new Date(data.created_at))}</OtherTitleText>
                         </Title>
                         <Line></Line>
                         <Content>
-                            {postData.content}
+                            {data.content}
                         </Content>
                     </ContentBox>
                 }
@@ -166,8 +155,3 @@ export default function NoticeDetail(props) {
         </Container>
     )
 };
-
-function fecthData(id) {
-    const result = datas.find(item => item.id == id);
-    return result || {};
-}

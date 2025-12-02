@@ -6,6 +6,7 @@ import LeftBoxTitle from "../components/LeftBoxTitle";
 import NewNoticeIcon from "../assets/icon/new_notice.svg?react"
 import { dataAndDayAndTime, isLastNDays } from "../services/date_format"
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Container = styled.div``;
 
@@ -91,22 +92,19 @@ const NewNoticeIconBox = styled.div`
 
 export default function Notice() {
     const navigate = useNavigate();
-    const data = [
-        {
-            id: 1,
-            title: "화재 대피 훈련 안내",
-            target: "1,2,3",
-            author: "김OO",
-            created_at: "2025-12-01T12:00:00Z",
-        },
-        {
-            id: 2,
-            title: "4층 세탁기 관련 주의사항",
-            target: "1,2",
-            author: "김OO",
-            created_at: "2025-11-30T12:00:00Z"
+    const [data, setData] = useState(null);
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`${SERVER_URL}/api/notices`, {
+                method: 'GET'
+            })
+            const temp = await response.json()
+            console.log(temp);
+            setData(temp.data);
         }
-    ];
+        fetchData();
+    }, [])
 
     return (
         <Container>
@@ -121,7 +119,7 @@ export default function Notice() {
                         <LeftBoxTitle text={"전체 공지"} />
                     </ListTitle>
                     <ListContent>
-                        {data.map((item, idx) => {
+                        {data && data.map((item, idx) => {
                             const date = new Date(item.created_at)
                             const str_date = dataAndDayAndTime(date)
                             const isLast3Days = isLastNDays(3, date)

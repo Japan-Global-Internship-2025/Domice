@@ -51,6 +51,8 @@ const Line = styled.div`
 `;
 
 const InputContent = styled.textarea`
+    width: 100%;
+    height: 90%;
     color: #404040;
     font-family: Pretendard;
     font-size: 13px;
@@ -90,6 +92,13 @@ export default function BoardWrite(props) {
     const [title, setTitle] = useState(null);
     const [content, setContent] = useState(null);
 
+    function submitBoardAll() {
+
+    }
+
+    function submitBoardPriavte() {
+
+    }
 
     return (
         <Container>
@@ -97,9 +106,9 @@ export default function BoardWrite(props) {
             <BoardInNav />
             <Main>
                 <FormBox>
-                    <InputTitle type="text" placeholder="제목" onChange={() => {}}/>
+                    <InputTitle type="text" placeholder="제목" onChange={(e) => { setTitle(e.target.value) }}/>
                     <Line />
-                    <InputContent placeholder="내용" />
+                    <InputContent placeholder="내용" onChange={(e) => { setContent(e.target.value) }}/>
                 </FormBox>
                 <SubmitBox>
                     <SubmitBtn $background={"#fff"} $color={"#48BFA2"} onClick={() => {}}>
