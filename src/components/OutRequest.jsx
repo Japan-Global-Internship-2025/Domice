@@ -126,24 +126,37 @@ const CalendarInput = styled.input.attrs({
 `;
 
 export default function OutRequest() {
-    const data = [
-        {
-            date1: '2025-11-19',
-            date2: '2025-11-17',
-            reason: '병원',
-            ok: true
-        }   
-    ]
+    // const data = [
+    //     {
+    //         date1: '2025-11-19',
+    //         date2: '2025-11-17',
+    //         reason: '병원',
+    //         ok: true
+    //     }   
+    // ]
+    const [data, setData] = useState(null);
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`${SERVER_URL}/api/leave`, {
+                method: 'GET'
+            })
+            const temp = await response.json()
+            console.log(temp);
+            setData(temp.data);
+        }
+        fetchData();
+    }, [])
     const [outRequsetDetail, setOutRequestDetail] = useState(false);
-        
+
 
     return (
         <OutRequestContainer>
             <OutRequsetTitle>
-                <LeftBoxTitle text={"외출신청"}/>
+                <LeftBoxTitle text={"외출신청"} />
                 <ToDetail onClick={() => { setOutRequestDetail(!outRequsetDetail) }}>
                     <GoDetailText>
-                        {outRequsetDetail? '외출내역 숨기기': '외출내역 보기'}
+                        {outRequsetDetail ? '외출내역 숨기기' : '외출내역 보기'}
                     </GoDetailText>
                     <GoDetailIcon $rotate={outRequsetDetail}>
                         <ArrowIcon />

@@ -56,8 +56,6 @@ const DateText = styled.p`
     min-width: ${props => props.$today && "26"}px;
 `;
 
-
-
 export default function HomeOut() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const dayOffsets = [-2, -1, 0, 1, 2];
