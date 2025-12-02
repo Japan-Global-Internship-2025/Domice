@@ -60,6 +60,7 @@ const NavList = [
 
 export default function MealInfo() {
     const [navMenu, setNavMenu] = useState(0);
+    
 
     return (
         <Container>

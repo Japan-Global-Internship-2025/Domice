@@ -56,7 +56,7 @@ const DateText = styled.p`
     min-width: ${props => props.$today && "26"}px;
 `;
 
-export default function HomeOut() {
+export default function HomeOut(props) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const dayOffsets = [-2, -1, 0, 1, 2];
     const [nearbyDate, setNearbyDate] = useState([]);
@@ -100,7 +100,7 @@ export default function HomeOut() {
                     </NearyByDates>
                 </CheckInBox>
             </CheckInContainer>
-            <OutRequest />
+            <OutRequest outRequest={props.outRequest}/>
             <SelectRemain />
         </Container>
     )

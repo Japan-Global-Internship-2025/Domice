@@ -131,7 +131,8 @@ export default function BoardList(props) {
                 </OrderByBox>
             </OrderByWrapper>
             <ContentList>
-                {props.data.map((item, idx) => {
+                {props.data && props.data.map((item, idx) => {
+                    console.log(item);
                     const content = item.content;
                     let author_name;
                     if (type == "private") {
@@ -148,7 +149,7 @@ export default function BoardList(props) {
                                         {item.title}
                                     </ContentTitle>
                                     <ContentPreview>
-                                        {content.length > 25 ? content.slice(0, 25) + "..." : content}
+                                        {content.length > 28 ? content.slice(0, 28) + "..." : content}
                                     </ContentPreview>
                                 </ContentTexts>
                                 <ContentBoxInfo>

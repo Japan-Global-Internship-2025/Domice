@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import OutRequestContent from "./OutRequestContent";
 import LeftBoxTitle from "./LeftBoxTitle";
@@ -125,30 +125,9 @@ const CalendarInput = styled.input.attrs({
     }
 `;
 
-export default function OutRequest() {
-    // const data = [
-    //     {
-    //         date1: '2025-11-19',
-    //         date2: '2025-11-17',
-    //         reason: '병원',
-    //         ok: true
-    //     }   
-    // ]
-    const [data, setData] = useState(null);
-    const SERVER_URL = import.meta.env.VITE_SERVER_URL
-    useEffect(() => {
-        async function fetchData() {
-            const response = await fetch(`${SERVER_URL}/api/leave`, {
-                method: 'GET'
-            })
-            const temp = await response.json()
-            console.log(temp);
-            setData(temp.data);
-        }
-        fetchData();
-    }, [])
+export default function OutRequest(props) {
+    const data = props.outRequest;
     const [outRequsetDetail, setOutRequestDetail] = useState(false);
-
 
     return (
         <OutRequestContainer>
@@ -165,8 +144,8 @@ export default function OutRequest() {
             </OutRequsetTitle>
             <OutRequestList>
                 {outRequsetDetail && data.map((item, idx) => {
-                    const str_date1 = dateAndDay(new Date(item.date1))
-                    const str_date2 = dateAndDay(new Date(item.date2));
+                    const str_date1 = dateAndDay(new Date(item.created_at))
+                    const str_date2 = dateAndDay(new Date(item.leave_date));
                     return (
                         <OutRequestBox key={idx}>
                             <OutRequestBoxTitle>
@@ -176,7 +155,7 @@ export default function OutRequest() {
                                     <CalendarInput />
                                 </CalendarIconBox>
                             </OutRequestBoxTitle>
-                            <OutRequestContent date={str_date2} reason={item.reason} ok={item.ok} />
+                            <OutRequestContent date={str_date2} reason={item.reason} ok={item.is_approved} />
                         </OutRequestBox>
                     )
                 })}

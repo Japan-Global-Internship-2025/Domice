@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import HomeMain from "./HomeMain";
 import HomeOut from "./HomeOut";
 import { getMeal } from '../services/meal'
+import { getStoredUser } from "../services/localStorageUtils.js";
 
 const Container = styled.div`
     display: flex;
@@ -60,6 +61,20 @@ const NavList = [
 export default function Home() {
     const [navMenu, setNavMenu] = useState(0);
     const [mealInfo, setMealInfo] = useState([["로딩중..."], ["로딩중..."], ["로딩중..."]]);
+    const [user, setUser] = useState(() => getStoredUser());
+    const [outRequestData, setOutRequestData] = useState(null);
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`${SERVER_URL}/api/leave?user_id=${user.id}`, {
+                method: 'GET'
+            })
+            const temp = await response.json()
+            console.log(temp);
+            setOutRequestData(temp.data);
+        }
+        fetchData();
+    }, [])
 
     useEffect(() => {
         async function fetchData() {
@@ -100,7 +115,7 @@ export default function Home() {
                 {<SelectMenuLine $left={NavList[navMenu].left} />}
             </Nav>
             <Content>
-                {navMenu == 0 ? <HomeMain meals={mealInfo} /> : <HomeOut />}
+                {navMenu == 0 ? <HomeMain meals={mealInfo} /> : <HomeOut outRequest={outRequestData}/>}
             </Content>
             <Navigation idx={0} />
         </Container>
