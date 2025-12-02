@@ -212,6 +212,7 @@ export default function Login() {
                     body: JSON.stringify({
                         accessToken: accessToken
                     }),
+                    credentials: 'include',
                 });
                 if (response.ok) {
                     const data = await response.json();
