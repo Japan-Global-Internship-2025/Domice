@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputRadio from '../components/InputRadio';
+import useLocalStorage from '../services/useLocalStorage.js';
 
 const Container = styled.div`
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(72, 191, 162, 0.13) 74.58%, rgba(72, 191, 162, 0.24) 99%);
@@ -133,6 +134,12 @@ export default function Login() {
     const [roomNumber, setRoomNumber] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
     const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const [userState, setUserState] = useLocalStorage('userState', {
+        id: null,
+        name: null,
+        room: null,
+        stu_num: null
+    });
 
     async function finish() {
         if (!roomNumber) {
@@ -161,7 +168,7 @@ export default function Login() {
             gender: genderOptions[selectedGender].value,
             email: user.email,
             profile_img: user.picture,
-            stu_num: user.student_number,
+            stu_num: user.stu_num,
         };
         console.log(userData);
 
@@ -174,6 +181,12 @@ export default function Login() {
                 body: JSON.stringify(userData),
             });
             const data = await response.json();
+            setUserState({
+                id: userData.id,
+                name: userData.name,
+                room: userData.room,
+                stu_num: userData.stu_num
+            });
             console.log('Server Response:', data);
             alert('회원가입이 완료되었습니다!');
             if (data.success) {
@@ -202,10 +215,17 @@ export default function Login() {
                 });
                 if (response.ok) {
                     const data = await response.json();
+                    console.log(data.data)
+                    setUserState({
+                        id: data.data.id,
+                        name: data.data.given_name,
+                        room: data.data.room,
+                        stu_num: data.data.stu_num
+                    });
+
                     if (data.data.join) {
                         navigate('/home');
                     }
-                    console.log('User Info:', data);
                     setUser(data.data);
                 }
                 else {
@@ -239,7 +259,7 @@ export default function Login() {
                             학번
                         </InfoLabel>
                         <InfoText>
-                            {user ? user.student_number : 'Loading...'}
+                            {user ? user.stu_num : 'Loading...'}
                         </InfoText>
                     </UserInfo>
                 </InfoContainer>
