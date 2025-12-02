@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputRadio from '../components/InputRadio';
 
 const Container = styled.div`
@@ -126,12 +127,14 @@ const genderOptions = [
 ];
 
 export default function Login() {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [selectedRegion, setSelectedRegion] = useState(null);
     const [roomNumber, setRoomNumber] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
-    
-    const finish = () => {
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+    async function finish() {
         if (!roomNumber) {
             alert('호실를 입력해주세요');
             return;
@@ -151,36 +154,36 @@ export default function Login() {
         }
 
         const userData = {
-            user_id: user.id,
-            student_number: user.student_number,
+            id: user.id,
             name: user.given_name,
             room: roomNumber,
             region: regionOptions[selectedRegion].value,
             gender: genderOptions[selectedGender].value,
             email: user.email,
-            profile_img: user.picture
+            profile_img: user.picture,
+            stu_num: user.student_number,
         };
         console.log(userData);
-        
 
-        // async () => {
-        //     try {
-        //         const response = await fetch('', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify(userData),
-        //         });
-        //         const data = await response.json();
-        //         console.log('Server Response:', data);
-        //         alert('회원가입이 완료되었습니다!');
-        //         return data;
-        //     } catch (error) {
-        //         console.error('Error sending user data:', error);
-        //         alert('회원가입 실패')
-        //     }
-        // };
+        try {
+            const response = await fetch(`${SERVER_URL}/api/auth/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            console.log('Server Response:', data);
+            alert('회원가입이 완료되었습니다!');
+            if (data.success) {
+                navigate('/home');
+            }
+            return data;
+        } catch (error) {
+            console.error('Error sending user data:', error);
+            alert('회원가입 실패')
+        }
     };
 
     useEffect(() => {
@@ -188,24 +191,36 @@ export default function Login() {
         const accessToken = parsedHash.get('access_token');
         const fetchUserInfo = async (accessToken) => {
             try {
-                const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo`, {
-                    method: 'GET',
+                const response = await fetch(`${SERVER_URL}/api/auth/login`, {
+                    method: 'POST',
                     headers: {
-                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
                     },
+                    body: JSON.stringify({
+                        accessToken: accessToken
+                    }),
                 });
-                const data = await response.json();
-                data.student_number = data.family_name.slice(0, 4);
-                console.log('User Info:', data);
-                setUser(data);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data.join) {
+                        navigate('/home');
+                    }
+                    console.log('User Info:', data);
+                    setUser(data.data);
+                }
+                else {
+                    alert("학교 계정으로 로그인해주세요.");
+                    navigate('/');
+                    return;
+                }
+
             } catch (error) {
                 console.error('Error fetching user info:', error);
             }
         };
-        if (accessToken) {
-            fetchUserInfo(accessToken);
-        }
+        fetchUserInfo(accessToken);
     }, []);
+
     return (
         <Container>
             <Logo src="/images/logo_green.png" alt="Logo" />
@@ -224,7 +239,7 @@ export default function Login() {
                             학번
                         </InfoLabel>
                         <InfoText>
-                            {user ? user.family_name : 'Loading...'}
+                            {user ? user.student_number : 'Loading...'}
                         </InfoText>
                     </UserInfo>
                 </InfoContainer>
@@ -258,7 +273,7 @@ export default function Login() {
                         />
                     </InputBox>
                 </InputContainer>
-                <FinishBtn onClick={finish}>
+                <FinishBtn onClick={() => finish()}>
                     회원가입하기
                 </FinishBtn>
             </UserContainer>
