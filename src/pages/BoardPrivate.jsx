@@ -34,7 +34,8 @@ export default function BoardPrivate() {
     useEffect(() => {
         async function fetchData() {
             const response = await fetch(`${SERVER_URL}/api/inquires`, {
-                method: 'GET'
+                method: 'GET',
+                credentials: 'include'
             })
             const temp = await response.json()
             console.log(temp);
