@@ -85,6 +85,7 @@ export default function Home() {
         fetchData();
     }, [])
     console.log(mealInfo);
+
     return (
         <Container>
             <Header />

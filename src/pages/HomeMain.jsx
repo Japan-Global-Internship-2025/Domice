@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UserIcon from "../assets/icon/user.svg?react";
 import RightArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import LeftBoxTitle from "../components/LeftBoxTitle";
+import TodayMealInfo from "../components/TodayMealInfo";
 
 const Container = styled.div``;
 
@@ -135,59 +136,15 @@ const MealsInfo = styled.div`
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.06);
 `;
 
-const MealsContent = styled.div`
-    display: flex;
-`;
-
-const MealBox = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-`;
-
-const MealTitle = styled.div`
-    align-self: stretch;
-    color: #FFF;
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 22px;
-`;
-
-const MealInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const MealInfoBox = styled.div`
-    display: flex;
-    justify-content: center; 
-`;
-
-const MealSpan = styled.span`
-    color: #FFF;
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 22px;
-`
-
 export default function HomeMain(props) {
     const navigate = useNavigate();
     const teacher_name = "김사감";
     const teacher_phone = "010-1234-5678";
-    const meal_title = ['아침', '점심', '저녁'];
 
     return (
         <Container>
             <TodayNotice/>
-            <Calendar dates={getWeekDates()}/>
+            <Calendar dates={getWeekDates()} $padding={"12px 20px"} now_day={true}/>
             <TodayTeacherContainer>
                 <LeftBoxTitle text={"오늘의 선생님"}/>
                 <TodayTeacherBox>
@@ -220,25 +177,7 @@ export default function HomeMain(props) {
                     </ToDatail>
                 </MealsTitle>
                 <MealsInfo>
-                    <MealsContent>
-                        {meal_title.map((item, idx) => {
-                            const meals = props.meals[idx];
-                            return (
-                                <MealBox key={idx}>
-                                    <MealTitle>{item}</MealTitle>
-                                    <MealInfoBox>
-                                        <MealInfo>
-                                            {meals && Array.isArray(meals) && meals.map((item, mealIdx) => (
-                                                <MealSpan key={mealIdx}>
-                                                    {item}
-                                                </MealSpan>
-                                            ))}
-                                        </MealInfo>
-                                    </MealInfoBox>
-                                </MealBox>
-                            )
-                        })}
-                    </MealsContent>
+                    <TodayMealInfo meals={props.meals}/>
                 </MealsInfo>
             </TodayMealsContainer>
         </Container>
@@ -257,5 +196,5 @@ function getWeekDates() {
         date.setDate(monday.getDate() + i);
         weekDates.push(date.getDate());
     }
-    return weekDates;
+    return [weekDates];
 }

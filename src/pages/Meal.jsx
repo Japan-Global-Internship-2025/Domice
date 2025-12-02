@@ -4,8 +4,13 @@ import Header from "../components/Header"
 import Navigation from "../components/Navigation";
 import MealToday from "./MealToday";
 import MealMonth from "./MealMonth";
+import { generateCalendar } from "../services/date_format";
 
-const Container = styled.div``;
+const Container = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+`;
 
 const Nav = styled.div`
     gap: 10px;
@@ -41,7 +46,7 @@ const SelectMenuLine = styled.div`
     transition: 0.1s ease-in-out;
 `;
 
-const Content = styled.div`
+const Main = styled.div`
     flex-grow: 1;
     overflow-y: auto;
     padding: 48px 0px 60px 0px;
@@ -55,6 +60,7 @@ const NavList = [
 
 export default function MealInfo() {
     const [navMenu, setNavMenu] = useState(0);
+
     return (
         <Container>
             <Header />
@@ -68,9 +74,9 @@ export default function MealInfo() {
                 })}
                 {<SelectMenuLine $left={NavList[navMenu].left} />}
             </Nav>
-            <Content>
-                {navMenu == 0 ? <MealToday/> : <MealMonth />}
-            </Content>
+            <Main>
+                {navMenu == 0 ? <MealToday /> : <MealMonth calendar={generateCalendar()} />}
+            </Main>
             <Navigation idx={2} />
         </Container>
     )

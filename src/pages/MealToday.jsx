@@ -162,7 +162,7 @@ const SelectMeal = styled.div`
 `
 
 export default function MealToday() {
-    const [mealInfo, setMealInfo] = useState([["로딩중..."], ["로딩중..."], ["로딩중..."]]);
+    const [mealInfo, setMealInfo] = useState([[{ data: "로딩중..." }], [{ data: "로딩중..." }], [{ data: "로딩중..." }]]);
     const [selectMeal, setSelectMeal] = useState(0);
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -175,13 +175,8 @@ export default function MealToday() {
     useEffect(() => {
         async function fetchData() {
             try {
+                setMealInfo([[{ data: "로딩중..." }], [{ data: "로딩중..." }], [{ data: "로딩중..." }]])
                 const response = await getMeal(currentDate);
-                if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
-                    setMealInfo(
-                        [{time: ['주말']}, {time: ['주말']}, {time: ['주말']}]
-                    )
-                    return;
-                }
                 const data = response.mealServiceDietInfo[1].row;
                 const meals = [];
                 data.forEach(row => {
@@ -208,7 +203,7 @@ export default function MealToday() {
         <Container>
             <MidBoxTitle text={"오늘의 급식"} />
             <DateBox>
-                <MoveDate onClick={() => {changeDate(-1)}}>
+                <MoveDate onClick={() => { changeDate(-1) }}>
                     <LeftArrowIcon />
                 </MoveDate>
                 <DateTextBox>
@@ -217,7 +212,7 @@ export default function MealToday() {
                         {dateAndDay(new Date(currentDate))}
                     </DateText>
                 </DateTextBox>
-                <MoveDate onClick={() => {changeDate(1)}}>
+                <MoveDate onClick={() => { changeDate(1) }}>
                     <RightArrowIcon />
                 </MoveDate>
             </DateBox>
@@ -227,7 +222,7 @@ export default function MealToday() {
                 </SideWrapper>
                 <MealInfoMain>
                     <SelectMeal>
-                        {selectMeal > 0 && <LeftArrowIcon onClick={() => {setSelectMeal(selectMeal-1)}} />}
+                        {selectMeal > 0 && <LeftArrowIcon onClick={() => { setSelectMeal(selectMeal - 1) }} />}
                     </SelectMeal>
                     <MealInfoInnerBox>
                         <MealTimeBox>
@@ -247,12 +242,12 @@ export default function MealToday() {
                         <MealContentText $opacity={0.64}>
                             {mealInfo[selectMeal].cal}
                         </MealContentText>
-                        { mealInfo[selectMeal].info && <MealInfoView onClick={() => {alert((mealInfo[selectMeal].info).replaceAll("<br/>", "\n"))}}>
+                        {mealInfo[selectMeal].info && <MealInfoView onClick={() => { alert((mealInfo[selectMeal].info).replaceAll("<br/>", "\n")) }}>
                             영양정보 더보기
                         </MealInfoView>}
                     </MealInfoInnerBox>
-                     <SelectMeal>
-                        {selectMeal < 2 && <RightArrowIcon onClick={() => {setSelectMeal(selectMeal+1)}}/>}
+                    <SelectMeal>
+                        {selectMeal < 2 && <RightArrowIcon onClick={() => { setSelectMeal(selectMeal + 1) }} />}
                     </SelectMeal>
                 </MealInfoMain>
                 <SideWrapper>

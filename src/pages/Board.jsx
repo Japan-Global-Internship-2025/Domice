@@ -1,11 +1,17 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
 import Navigation from "../components/Navigation";
 import BoardMain from "./BoardMain";
-import BoardAnonymous from "./BoardAnonymous";
+import BoardAnonymous from "./BoardPrivate";
+import BoardWriteIcon from "../assets/icon/board_write.svg?react";
 
-const Container = styled.div``;
+const Container = styled.div`
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+`;
 
 const Nav = styled.div`
     gap: 10px;
@@ -41,20 +47,28 @@ const SelectMenuLine = styled.div`
     transition: 0.1s ease-in-out;
 `;
 
-const Content = styled.div`
+const Main = styled.div`
     flex-grow: 1;
     overflow-y: auto;
-    padding: 48px 0px 60px 0px;
+    padding: 32px 24px 60px 24px;
     background-color: #f9f9f9;
+    position: relative;
+`;
+
+const BoardWrite = styled.div`
+    right: 24px;
+    bottom: 74px;
+    position: absolute;
 `;
 
 const NavList = [
-    { value: '전체 게시판', idx: 0, left: "25%" },
-    { value: '1대1 문의', idx: 1, left: "75%" }
+    { value: '전체 게시판', idx: 0, left: "25%", type: "all"},
+    { value: '1대1 문의', idx: 1, left: "75%", type: "private"}
 ]
 
 export default function Board() {
     const [navMenu, setNavMenu] = useState(0);
+    const navigate = useNavigate();
     return (
         <Container>
             <Header />
@@ -68,9 +82,12 @@ export default function Board() {
                 })}
                 {<SelectMenuLine $left={NavList[navMenu].left} />}
             </Nav>
-            <Content>
+            <Main>
                 {navMenu == 0 ? <BoardMain /> : <BoardAnonymous />}
-            </Content>
+                <BoardWrite onClick={() => {navigate('/board/write')}}>
+                    <BoardWriteIcon/>
+                </BoardWrite>
+            </Main>
             <Navigation idx={3} />
         </Container>
     )
