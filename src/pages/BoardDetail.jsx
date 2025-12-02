@@ -58,7 +58,8 @@ export default function BoardDetail(props) {
     useEffect(() => {
         async function fetchData() {
             const response = await fetch(`${SERVER_URL}/api/${type == 'all' ? 'posts' : 'inquires'}/${id}`, {
-                method: 'GET'
+                method: 'GET',
+                credentials: 'include'
             })
             const temp = await response.json()
             if (type == "private") {

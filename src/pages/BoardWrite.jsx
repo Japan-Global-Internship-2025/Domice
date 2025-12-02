@@ -3,6 +3,7 @@ import Header from "../components/Header"
 import Navigation from "../components/Navigation";
 import { useEffect, useState } from "react";
 import BoardInNav from "../components/BoardInNav";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
     height: 100dvh; 
@@ -89,15 +90,42 @@ const SubmitBtn = styled.div`
 `
 
 export default function BoardWrite(props) {
+    const navigate = useNavigate()
     const [title, setTitle] = useState(null);
     const [content, setContent] = useState(null);
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
+
+    function submitBoardService(type, is_secret=null) {
+        const data = {
+            title: title,
+            content: content,
+        }
+        if (is_secret) data.is_secret = is_secret;
+        console.log(data);
+        async function submitData() {
+            const response = await fetch(`${SERVER_URL}/api/${type}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+            if (response.ok) {
+                alert("등록 성공!")
+                navigate("/board");
+            }
+        }
+        submitData();
+    }
 
     function submitBoardAll() {
-
+        const is_secret = confirm("익명으로 하시겠습니까?");
+        submitBoardService('posts', is_secret)
     }
 
     function submitBoardPriavte() {
-
+        submitBoardService('inquires')
     }
 
     return (
@@ -106,15 +134,15 @@ export default function BoardWrite(props) {
             <BoardInNav />
             <Main>
                 <FormBox>
-                    <InputTitle type="text" placeholder="제목" onChange={(e) => { setTitle(e.target.value) }}/>
+                    <InputTitle type="text" placeholder="제목" onChange={(e) => { setTitle(e.target.value) }} />
                     <Line />
-                    <InputContent placeholder="내용" onChange={(e) => { setContent(e.target.value) }}/>
+                    <InputContent placeholder="내용" onChange={(e) => { setContent(e.target.value) }} />
                 </FormBox>
                 <SubmitBox>
-                    <SubmitBtn $background={"#fff"} $color={"#48BFA2"} onClick={() => {}}>
+                    <SubmitBtn $background={"#fff"} $color={"#48BFA2"} onClick={() => { submitBoardAll() }}>
                         게시판 올리기
                     </SubmitBtn>
-                    <SubmitBtn $background={"#48BFA2"} $color={"#fff"} onClick={() => {}}>
+                    <SubmitBtn $background={"#48BFA2"} $color={"#fff"} onClick={() => { submitBoardPriavte() }}>
                         1대1 문의하기
                     </SubmitBtn>
                 </SubmitBox>
