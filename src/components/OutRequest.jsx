@@ -128,6 +128,7 @@ const CalendarInput = styled.input.attrs({
 export default function OutRequest(props) {
     const data = props.outRequest;
     const [outRequsetDetail, setOutRequestDetail] = useState(false);
+    console.log(data)
 
     return (
         <OutRequestContainer>

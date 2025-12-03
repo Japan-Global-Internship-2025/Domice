@@ -3,6 +3,7 @@ import Header from "../components/Header"
 import Navigation from "../components/Navigation";
 import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div``;
 
@@ -195,6 +196,7 @@ const LogoutBtnText = styled.p`
 `;
 
 export default function Mypage() {
+    const navigator = useNavigate();
     const [data, setData] = useState(null)
     const [scoreDetail, setScoreDetail] = useState(false);
     const SERVER_URL = import.meta.env.VITE_SERVER_URL
@@ -210,6 +212,22 @@ export default function Mypage() {
         }
         fecthData();
     }, []);
+
+    const logoutHandler = () => {
+        async function logout() {
+            const response = await fetch(`${SERVER_URL}/api/auth/logout`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+            const temp = await response.json()
+            if (response.ok) {
+                navigator('/')
+            }
+            console.log(temp);
+            setData(temp.data);
+        }
+        logout();
+    }
 
 
     return (
@@ -256,12 +274,12 @@ export default function Mypage() {
                         <TotalScoreDatailBtn>
                             <GoDatailText>{scoreDetail ? '상벌점 내역 숨기기' : '상벌점 내역 보기'}</GoDatailText>
                             <GoDetailIcon $rotate={scoreDetail}>
-                                <ArrowIcon/>
+                                <ArrowIcon />
                             </GoDetailIcon>
                         </TotalScoreDatailBtn>
                     </TotalScoreBox>
                 </UserScoreBox>
-                <LogoutBtn>
+                <LogoutBtn onClick={logoutHandler}>
                     <LogoutBtnText>로그아웃</LogoutBtnText>
                 </LogoutBtn>
             </Main>}
