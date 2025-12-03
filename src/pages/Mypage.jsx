@@ -4,6 +4,8 @@ import Navigation from "../components/Navigation";
 import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GoMyBoardIcon from "../assets/icon/mypage_go_myboard.svg?react"
+import { dateAndDay } from "../services/date_format"
 
 const Container = styled.div``;
 
@@ -118,16 +120,20 @@ const ScoreBoxText = styled.p`
     line-height: 22px; /* 122.222% */
 `;
 
-const TotalScoreBox = styled.div`
+const TotalScoreContainer = styled.div` 
     display: flex;
+    flex-direction: column;
     padding: 18px 16px;
-    align-items: center;
-    gap: 2px;
+    gap: 20px;
     flex-shrink: 0;
     align-self: stretch;
     border-radius: 14px;
     background: #FFF;
 `;
+
+const TotalScoreBox = styled.div`
+    display: flex;
+`
 
 const TotalScoreText = styled.div`
     color: #404040;
@@ -191,15 +197,83 @@ const LogoutBtnText = styled.p`
     color: #FF2929;
     font-family: Pretendard;
     font-size: 14px;
-    font-style: normal;
     font-weight: 400;
     line-height: 22px; /* 157.143% */
+`;
+
+const MyBoard = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+`;
+
+const GoMyBoardBtn = styled.div`
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 2px;
+    align-self: stretch;
+    border-radius: ${props => props.$position == 'top' ? '14px 14px 0.5px 0' : '0.5px 0 14px 14px'};
+    border: 0px solid rgba(64, 64, 64, 0.14);
+    background: #FFF;
+`
+
+const GoBoardBtnText = styled.p`
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1 0 0;color: #404040;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+`;
+
+const LogBox = styled.div`
+    
+`;
+
+const LogBoxTitle = styled.p`
+    color: #404040;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; 
+`
+
+const LogBoxContent = styled.div`
+    display: flex;
+    justify-content: space-around;
+`;
+
+const LogBoxReason = styled.p`
+    flex: 1 1 0;
+    color: rgba(64, 64, 64, 0.64);
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+`
+
+const LogBoxDate = styled.p`
+    color: rgba(64, 64, 64, 0.64);
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
 `;
 
 export default function Mypage() {
     const navigate = useNavigate();
     const [data, setData] = useState(null)
     const [scoreDetail, setScoreDetail] = useState(false);
+    const [meritlogs, setMeritlogs] = useState(null);
     const SERVER_URL = import.meta.env.VITE_SERVER_URL
     useEffect(() => {
         async function fecthData() {
@@ -214,6 +288,19 @@ export default function Mypage() {
             }
             console.log(temp);
             setData(temp.data);
+        }
+        fecthData();
+    }, []);
+
+    useEffect(() => {
+        async function fecthData() {
+            const response = await fetch(`${SERVER_URL}/api/meritlogs`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+            const temp = await response.json()
+            console.log(temp);
+            setMeritlogs(temp.data);
         }
         fecthData();
     }, []);
@@ -272,19 +359,42 @@ export default function Mypage() {
                             </InnerBox>
                         </ScoreInnerBox>
                     </PlusMinusScore>
-                    <TotalScoreBox onClick={() => { setScoreDetail(!scoreDetail) }}>
-                        <TotalScoreText>
-                            총 상점 {data.plus_score - data.minus_score}점
-                        </TotalScoreText>
-                        <TotalScoreDatailBtn>
-                            <GoDatailText>{scoreDetail ? '상벌점 내역 숨기기' : '상벌점 내역 보기'}</GoDatailText>
-                            <GoDetailIcon $rotate={scoreDetail}>
-                                <ArrowIcon />
-                            </GoDetailIcon>
-                        </TotalScoreDatailBtn>
-                    </TotalScoreBox>
+                    <TotalScoreContainer onClick={() => { setScoreDetail(!scoreDetail) }}>
+                        <TotalScoreBox>
+                            <TotalScoreText>
+                                총 상점 {data.plus_score - data.minus_score}점
+                            </TotalScoreText>
+                            <TotalScoreDatailBtn>
+                                <GoDatailText>{scoreDetail ? '상벌점 내역 숨기기' : '상벌점 내역 보기'}</GoDatailText>
+                                <GoDetailIcon $rotate={scoreDetail}>
+                                    <ArrowIcon />
+                                </GoDetailIcon>
+                            </TotalScoreDatailBtn>
+                        </TotalScoreBox>
+                        {scoreDetail && meritlogs.map((item, idx) => {
+                            return (
+                                <LogBox key={idx}>
+                                    <LogBoxTitle>{item.log_type} {item.score}점</LogBoxTitle>
+                                    <LogBoxContent>
+                                        <LogBoxReason>{item.reason}</LogBoxReason>
+                                        <LogBoxDate>{dateAndDay(new Date(item.created_at))}</LogBoxDate>
+                                    </LogBoxContent>
+                                </LogBox>
+                            )
+                        })}
+                    </TotalScoreContainer>
                 </UserScoreBox>
-                <LogoutBtn onClick={logoutHandler}>
+                <MyBoard>
+                    <GoMyBoardBtn $position='top'>
+                        <GoBoardBtnText>내가 쓴 글 보기</GoBoardBtnText>
+                        <GoMyBoardIcon />
+                    </GoMyBoardBtn>
+                    <GoMyBoardBtn $position='bottom'>
+                        <GoBoardBtnText>1대1 문의 내역 확인</GoBoardBtnText>
+                        <GoMyBoardIcon />
+                    </GoMyBoardBtn>
+                </MyBoard>
+                <LogoutBtn onClick={() => confirm("정말 로그아웃 하시겠습니까?") && logoutHandler}>
                     <LogoutBtnText>로그아웃</LogoutBtnText>
                 </LogoutBtn>
             </Main>}

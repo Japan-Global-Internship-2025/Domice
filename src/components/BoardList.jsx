@@ -139,7 +139,7 @@ export default function BoardList(props) {
                         author_name = item.reply ? "답변 완료" : "답변 미완료";
                     }
                     else {
-                        author_name = item.is_secret ? '익명' : item.author_name;
+                        author_name = item.is_secret ? '익명' : item.profiles.name;
                     }
                     return (
                         <ContentBox key={idx} onClick={() => { navigate(`/board/${props.type}/${item.id}`) }}>

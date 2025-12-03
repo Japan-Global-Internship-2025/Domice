@@ -62,14 +62,15 @@ export default function BoardDetail(props) {
                 credentials: 'include'
             })
             const temp = await response.json()
+            const fetchedData = temp.data;
+            setData(fetchedData);
             if (type == "private") {
-                SetInfo2(temp.data.reply ? "답변 완료" : "답변 미완료");
+                SetInfo2(fetchedData?.reply ? "답변 완료" : "답변 미완료");
             }
             else {
-                SetInfo2(temp.data.is_secret ? '익명' : temp.data.author_name);
+                SetInfo2(fetchedData?.is_secret ? '익명' : fetchedData?.profiles?.name);
             }
-            console.log(temp);
-            setData(temp.data);
+
         }
         fetchData();
     }, [navigate])
