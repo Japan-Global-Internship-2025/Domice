@@ -10,7 +10,8 @@ const Container = styled.div``;
 const Main = styled.div`
     padding: 32px 24px 60px 24px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
+    gap: 20px;
 `;
 
 const UserInfoContainer = styled.div`
