@@ -1,6 +1,8 @@
 import './App.css'
 import { BrowserView, MobileView } from 'react-device-detect'
 import { Route, Routes } from 'react-router-dom'
+import Intro from './pages/Intro'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       </BrowserView>
       <MobileView>
         <Routes>
+          <Route path="/" element={<Intro/>}/>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
       </MobileView>
     </>
