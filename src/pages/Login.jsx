@@ -166,6 +166,7 @@ export default function Login() {
         console.log(userData);
 
         try {
+            console.log("회원가입 시도");
             const response = await fetch(`${SERVER_URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: {
@@ -191,6 +192,7 @@ export default function Login() {
         const accessToken = parsedHash.get('access_token');
         const fetchUserInfo = async (accessToken) => {
             try {
+                console.log("로그인 시도");
                 const response = await fetch(`${SERVER_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: {
