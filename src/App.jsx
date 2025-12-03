@@ -9,6 +9,8 @@ import Mypage from './pages/Mypage';
 import NoticeDetail from './pages/NoticeDetail';
 import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
+import Intro from './pages/Intro'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path='/board/private/:id' element={<BoardDetail type={"private"}/>}/>
           <Route path='/board/all/:id' element={<BoardDetail type={"all"}/>}/>
           <Route path='/board/write' element={<BoardWrite/>}/>
+          <Route path="/" element={<Intro/>}/>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
       </MobileView>
     </>
