@@ -197,7 +197,7 @@ const LogoutBtnText = styled.p`
 `;
 
 export default function Mypage() {
-    const navigator = useNavigate();
+    const navigate = useNavigate();
     const [data, setData] = useState(null)
     const [scoreDetail, setScoreDetail] = useState(false);
     const SERVER_URL = import.meta.env.VITE_SERVER_URL
@@ -208,6 +208,10 @@ export default function Mypage() {
                 credentials: 'include'
             })
             const temp = await response.json()
+            if (!response.ok) {
+                alert("로그인이 필요합니다.")
+                navigate("/")
+            }
             console.log(temp);
             setData(temp.data);
         }
@@ -222,7 +226,7 @@ export default function Mypage() {
             })
             const temp = await response.json()
             if (response.ok) {
-                navigator('/')
+                navigate('/')
             }
             console.log(temp);
             setData(temp.data);
@@ -245,7 +249,7 @@ export default function Mypage() {
                             <UserRoom>{data.room}호</UserRoom>
                         </UserInfo>
                         <UserInfo>
-                            <UserSchool>미림마이스터고등학교 {data.stu_num[0]}학년 {data.stu_num[1]}반</UserSchool>
+                            <UserSchool>미림마이스터고등학교 {data.stu_num.slice(0, 1)}학년 {data.stu_num.slice(1, 2)}반</UserSchool>
                         </UserInfo>
                     </UserInfoBox>
                 </UserInfoContainer>
