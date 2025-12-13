@@ -131,7 +131,7 @@ export default function BoardWrite(props) {
     return (
         <Container>
             <Header />
-            <BoardInNav />
+            <BoardInNav title={"작성하기"}/>
             <Main>
                 <FormBox>
                     <InputTitle type="text" placeholder="제목" onChange={(e) => { setTitle(e.target.value) }} />

@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 import { useState, useEffect } from "react";
 import HomeMain from "./HomeMain";
 import HomeOut from "./HomeOut";
-import { getMeal } from '../services/meal'
+import { getMeal } from '../services/Meal'
 
 const Container = styled.div`
     display: flex;
@@ -12,7 +12,7 @@ const Container = styled.div`
     height: 100%;
 `;
 
-const Content = styled.div`
+const Main = styled.div`
     flex-grow: 1;
     overflow-y: auto;
     padding: 0px 24px 60px 24px;
@@ -113,9 +113,9 @@ export default function Home() {
                 })}
                 {<SelectMenuLine $left={NavList[navMenu].left} />}
             </Nav>
-            <Content>
+            <Main>
                 {navMenu == 0 ? <HomeMain meals={mealInfo} /> : <HomeOut outRequest={outRequestData}/>}
-            </Content>
+            </Main>
             <Navigation idx={0} />
         </Container>
 

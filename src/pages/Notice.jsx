@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 import TodayNotice from "../components/TodayNotice";
 import LeftBoxTitle from "../components/LeftBoxTitle";
 import NewNoticeIcon from "../assets/icon/new_notice.svg?react"
-import { dataAndDayAndTime, isLastNDays } from "../services/date_format"
+import { dataAndDayAndTime, isLastNDays } from "../services/DateFormat"
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 

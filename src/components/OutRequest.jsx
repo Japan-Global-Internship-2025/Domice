@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import OutRequestContent from "./OutRequestContent";
 import LeftBoxTitle from "./LeftBoxTitle";
-import { dateAndDay } from "../services/date_format"
+import { dateAndDay } from "../services/DateFormat"
 
 const OutRequestContainer = styled.div`
     width: 100%;

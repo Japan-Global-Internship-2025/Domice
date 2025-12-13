@@ -43,7 +43,7 @@ export default function BoardMain() {
     }, [])
     return (
         <Container>
-            <BoardList data={data} type={"all"} />
+            <BoardList data={data} type={"all"} title={"전체 게시판"}/>
         </Container>
     )
 };

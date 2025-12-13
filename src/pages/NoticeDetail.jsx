@@ -3,7 +3,7 @@ import Header from "../components/Header"
 import Navigation from "../components/Navigation";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dataAndDayAndTime } from "../services/date_format"
+import { dataAndDayAndTime } from "../services/DateFormat"
 
 const Container = styled.div`
     height: 100vh;

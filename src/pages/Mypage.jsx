@@ -5,7 +5,7 @@ import ArrowIcon from "../assets/icon/right_outline_arrow.svg?react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoMyBoardIcon from "../assets/icon/mypage_go_myboard.svg?react"
-import { dateAndDay } from "../services/date_format"
+import { dateAndDay } from "../services/DateFormat"
 
 const Container = styled.div``;
 

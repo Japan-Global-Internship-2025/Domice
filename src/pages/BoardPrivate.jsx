@@ -45,7 +45,7 @@ export default function BoardPrivate() {
     }, [])
     return (
         <Container>
-            <BoardList data={data} type={"private"} />
+            <BoardList data={data} type={"private"} title={"1대1 문의"} />
         </Container>
     )
 };
