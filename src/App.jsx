@@ -9,6 +9,7 @@ import Mypage from './pages/Mypage';
 import NoticeDetail from './pages/NoticeDetail';
 import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
+import QRScan from './pages/QRScan';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/board/private/:id' element={<BoardDetail type={"private"}/>}/>
           <Route path='/board/all/:id' element={<BoardDetail type={"all"}/>}/>
           <Route path='/board/write' element={<BoardWrite/>}/>
+          <Route path='/qr/scan' element={<QRScan/>}/>
         </Routes>
       </MobileView>
     </>
