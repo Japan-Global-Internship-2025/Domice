@@ -210,8 +210,13 @@ export default function Login() {
                     }
                     setUser(data.data);
                 }
+                else if (response.status == 403) {
+                    alert("학교 계정으로 로그인해주세요");
+                    navigate('/');
+                    return;
+                }
                 else {
-                    alert("학교 계정으로 로그인해주세요.");
+                    alert("서버 오류 발생. 관리자한테 문의하세요");
                     navigate('/');
                     return;
                 }
